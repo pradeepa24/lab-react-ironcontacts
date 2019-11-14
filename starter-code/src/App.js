@@ -9,6 +9,7 @@ class App extends Component {
     super(props);
     this.state = {
       contactList: contacts,
+      visibleList: contacts.slice(0, 5),
       random:{randomNo:-1,randomFlag:false},
       sortName:{sortFlag:false},
       sortPop:{sortFlag:false},
@@ -24,6 +25,7 @@ setDeleteFlag = (del) => {
   })
   
 }
+
 changeShow = () => {
     this.setState({show:!this.state.show})
     console.log(this.state.show)
@@ -61,6 +63,33 @@ changeShow = () => {
       sortPop:{sortFlag:true},
     })
   }
+  displayList = () => {
+    return (
+      <ContactsDisplay 
+      sortName = {this.state.sortName} 
+      sortPop = {this.state.sortPop}
+      rand = {this.state.random}
+      changeShow={this.changeShow}
+      deleteFlag = {this.state.deleteFlag}
+      visibleList = {this.state.visibleList}
+      delete = {this.delete}
+  
+      />
+    );
+  }
+  delete = (ind) => {
+      this.changeShow();
+    console.log(this.state.deleteFlag)
+    if(this.state.deleteFlag) {
+        this.state.visibleList.splice(ind, 1);
+        console.log(this.state.visibleList)
+    }
+        this.setState({
+            visibleList: this.state.visibleList
+        })
+        console.log(this.state.deleteFlag)
+        console.log(this.state.visibleList)
+}
   render() {
 
     return (
@@ -91,13 +120,7 @@ changeShow = () => {
           </tr>
         </thead>
           <tbody >
-          <ContactsDisplay 
-          sortName = {this.state.sortName} 
-          sortPop = {this.state.sortPop}
-          rand = {this.state.random}
-          changeShow={this.changeShow}
-          deleteFlag = {this.state.deleteFlag}
-          />
+         {this.displayList()}
           </tbody>
         </table>
         </div>
